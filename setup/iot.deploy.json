@@ -36,10 +36,10 @@
         "newHubName": "[concat(parameters('namePrefix'),uniqueString(resourceGroup().id))]",
         "hubName": "[if(empty(parameters('hubName')),variables('newHubName'),parameters('hubName'))]",
         //"hubApiVersion": "2019-11-04",
-        "hubApiVersion": "2020-01-01",
+        "hubApiVersion": "2021-03-31",
         "hubResourceGroup": "[if(empty(parameters('hubResourceGroup')),resourceGroup().name,parameters('hubResourceGroup'))]",
         "hubResourceId": "[resourceId(variables('hubResourceGroup'),'Microsoft.Devices/IotHubs',variables('hubName'))]",
-        "hubIdentityName": "[concat(variables('hubName'))]"
+        "hubIdentityName": "[concat(variables('hubName'), '-identity')]"
     },
     "resources": [
         {
@@ -48,6 +48,17 @@
             "name": "createIotHub",
             "properties": {
                 "mode": "Incremental",
+               // "expressionEvaluationOptions": {
+               //     "scope": "Inner"
+                //},
+                //"parameters": {
+                //    "namePrefix": {
+                //        "value": "[parameters('namePrefix')]"
+                //    },
+                //    "managedIdentityName": {
+                //        "value": "[variables('hubIdentityName')]"
+                //    }
+                //},
                 "template": {
                     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
                     "contentVersion": "1.0.0.0",
@@ -58,13 +69,32 @@
                             "apiVersion": "2018-11-30",
                             "location": "[resourceGroup().location]"
                         },
+                        {
+                            "type": "Microsoft.Resources/deploymentScripts",
+                            "comments": "adding a delay to allow for the role assignement to propagate through storage",
+                            "dependsOn": [ 
+                                "[variables('hubIdentityName')]"
+                                ],
+                            "apiVersion": "2020-10-01",
+                            "name": "managed-identity-role-assignmentComplete",
+                            "location": "[resourceGroup().location]",
+                            "kind": "AzurePowerShell",
+                            "properties": {
+                                "azPowerShellVersion": "5.0",
+                                "forceUpdateTag": "1.0",
+                                "scriptContent": "Start-Sleep -s 60",
+                                "timeout": "PT30M",
+                                "cleanupPreference": "Always",
+                                "retentionInterval": "PT1H"
+                            }
+                        },
 
                         {
                             "condition": "[empty(parameters('hubName'))]",
                             "type": "Microsoft.Devices/IotHubs",
                             "comments": "Video Analyzer is hosted on an IoT Edge device. The host device is managed through an IoT Hub. The keys for accessing the hub are in the template's output.",
                             "apiVersion": "[variables('hubApiVersion')]",
-                            "name": "[variables('hubName')]",
+                            "name": "[concat (variables('hubName'), '-hub')]",
                             "location": "[resourceGroup().location]",
                             "identity": {
                                 "type": "UserAssigned",
@@ -91,7 +121,7 @@
                 
                     ]
                 }
-            }
+        }
         }
     ],
     "outputs": {
