@@ -84,9 +84,7 @@
                                     }
                                 }
                             },
-                            "dependsOn": [
-                                "[resourceID('Microsoft.ManagedIdentity/userAssignedIdenties/',variables('hubIdentityName'))]"
-                            ],
+
                             "tags": "[parameters('resourceTags')]"
                         }
                 
