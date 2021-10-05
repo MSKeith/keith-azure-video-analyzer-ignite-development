@@ -38,7 +38,7 @@
         "hubApiVersion": "2019-11-04",
         "hubResourceGroup": "[if(empty(parameters('hubResourceGroup')),resourceGroup().name,parameters('hubResourceGroup'))]",
         "hubResourceId": "[resourceId(variables('hubResourceGroup'),'Microsoft.Devices/IotHubs',variables('hubName'))]",
-        "hubIdentityName": "[concat(parameters('hubName'))]"
+        "hubIdentityName": "[concat(variables('hubName'))]"
     },
     "resources": [
         {
@@ -75,9 +75,6 @@
                                 "name": "S1",
                                 "capacity": 1
                             },
-                            "dependsOn": [
-                                "[resourceID('Microsoft.ManagedIdentity/userAssignedIdenties/',variables('hubIdentityName'))]"
-                            ],
                             "properties": {
                                 "ipFilterRules": [],
                                 "eventHubEndpoints": {
