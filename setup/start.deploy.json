@@ -288,7 +288,7 @@
             "resourceGroup": "[parameters('resourceGroup')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/resourceGroups',parameters('resourceGroup'))]",
-                "[resourceId('Microsoft.Resources/deployments', 'deploy-iot-resources')]"
+                "deploy-iot-resources"
             ],
             "properties": {
                 "templateLink": {
