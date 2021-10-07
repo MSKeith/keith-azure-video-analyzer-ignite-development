@@ -301,6 +301,9 @@
                     },
                     "iotHubManagedIdendity": {
                         "value": "[reference('deploy-iot-resources').outputs.hubIdentityName.value]"
+                    },
+                    "hubName":{
+                        "Value": "[reference('deploy-iot-resources').outputs.hubName.value]"
                     }
                     
                 }

@@ -34,6 +34,12 @@
             "metadata": {
                 "description": "This is the value for the IoT Hub user assignted managed identity."
             }
+        },
+        "hubName": {
+            "type": "string",
+            "metadata": {
+                "description": "This is the value for the IoT Hub name."
+            }
         }
     },
     "variables": {
@@ -158,7 +164,7 @@
         {
             "type": "Microsoft.Media/videoAnalyzers",
             "comments": "The Azure Video Analyzer account",
-            "apiVersion": "2021-05-01-preview",
+            "apiVersion": "2021-11-01-preview",
             "name": "[variables('accountName')]",
             "location": "[resourceGroup().location]",
             "dependsOn": [
@@ -170,6 +176,14 @@
                         "id": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
                         "identity": {
                             "userAssignedIdentity": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',variables('managedIdentityName'))]"
+                        }
+                    }
+                ],
+                "iotHubs": [
+                    {
+                        "id": "[resourceId('Microsoft.Devices/IotHubs', parameters('hubName'))]",
+                        "identity": {
+                            "userAssignedIdentity": "[resourceId('Microsoft.Devices/IotHubs',parameters('hubName'))]"
                         }
                     }
                 ]
