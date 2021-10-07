@@ -183,7 +183,7 @@
                     {
                         "id": "[resourceId('Microsoft.Devices/IotHubs', parameters('hubName'))]",
                         "identity": {
-                            "userAssignedIdentity": "[resourceId('Microsoft.Devices/IotHubs',parameters('hubName'))]"
+                            "userAssignedIdentity": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities',parameters('iotHubManagedIdendity'))]"
                         }
                     }
                 ]
