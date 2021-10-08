@@ -203,7 +203,32 @@
                         "visible": "[contains(basics('useExistingEdgeDevice'),'existing')]"
                     }
                 ]
-            }
+            },
+			{
+				"name": "tags",
+				"label": "Tags",
+				"elements": [
+					{
+						"name": "tagsByResource",
+						"type": "Microsoft.Common.TagsByResource",
+						"resources": [
+							"Microsoft.Storage/storageAccounts",
+							"Microsoft.ManagedIdentity/userAssignedIdentities",
+							"Microsoft.Devices/IotHubs",
+							"Microsoft.Network/networkInterfaces",
+							"Microsoft.Network/publicIpAddresses",
+							"Microsoft.Network/networkSecurityGroups",
+							"Microsoft.Network/bastionHosts",
+							"Microsoft.Resources/resourceGroups",
+							"Microsoft.Authorization/roleAssignments",
+							"Microsoft.Resources/deployments",
+							"Microsoft.ContainerRegistry/registries",
+							"Microsoft.Media/videoAnalyzers",
+							"Microsoft.Compute/virtualMachines"
+						]
+					}
+				]
+			}
         ],
         "outputs": {
             "resourceGroup": "[basics('resourceGroup')]",
