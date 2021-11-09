@@ -62,8 +62,7 @@
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "2018-09-01-preview",
             "dependsOn": [
-                "[variables('hubIdentityName')]",
-                "[variables('hubName')]"
+                "[variables('hubIdentityName')]"
             ],
             "name": "[parameters('roleNameGuid')]",
             "properties": {
